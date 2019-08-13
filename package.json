@@ -1,0 +1,30 @@
+{
+  "name": "api-graphql-evento",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmontellanob/api-graphql-evento.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cmontellanob/api-graphql-evento/issues"
+  },
+  "homepage": "https://github.com/cmontellanob/api-graphql-evento#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.4.2",
+    "graphql-tools": "^4.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1",
+    "standard": "^14.0.0-0"
+  }
+}
