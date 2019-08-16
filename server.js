@@ -4,19 +4,28 @@ const graphql = require('graphql')
 const joinMonster = require('join-monster')
 
 // Connect to database
-const mysql = require('mysql')
+/*const mysql = require('mysql')
 const client = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'evento'
+});*/
+var knex = require('knex')({
+    client: 'mysql',
+    connection: {
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'evento'
+    }
 });
-client.connect((err) => {
+/*client.connect((err) => {
     if (err) throw err;
     console.log('Connected!');
 
     console.log('');
-});
+});*/
 
 
 
@@ -104,7 +113,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
                 return joinMonster.default(resolveInfo, {}, sql => {
                     sql = sql.replace(/\"/g, '')
                     console.log(sql);
-                    return client.query(sql)
+                    return knex.raw(sql)
+                        // client.query(sql)
                 })
             }
         },
@@ -117,7 +127,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
                     console.log("antes:" + sql);
                     sql = sql.replace(/\"/g, '')
                     console.log(sql);
-                    return client.query(sql)
+                    return knex.raw(sql)
+                        // client.query(sql)
                 })
             }
         },
@@ -126,7 +137,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
                     sql = sql.replace(/\"/g, '')
-                    return client.query(sql)
+                    return knex.raw(sql)
+                        // client.query(sql)
                 })
             }
         },
@@ -137,7 +149,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
                     sql = sql.replace(/\"/g, '')
-                    return client.query(sql)
+                    return knex.raw(sql)
+                        // client.query(sql)
                 })
             }
         },
@@ -146,7 +159,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
                     sql = sql.replace(/\"/g, '')
-                    return client.query(sql)
+                    return knex.raw(sql)
+                        // client.query(sql)
                 })
             }
         },
@@ -157,7 +171,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
                     sql = sql.replace(/\"/g, '')
-                    return client.query(sql)
+                    return knex.raw(sql)
+                        // client.query(sql)
                 })
             }
         },
