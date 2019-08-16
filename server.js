@@ -14,7 +14,10 @@ const client = mysql.createConnection({
 client.connect((err) => {
     if (err) throw err;
     console.log('Connected!');
+
+    console.log('');
 });
+
 
 
 // Define the schema
@@ -26,11 +29,11 @@ const Inscrito = new graphql.GraphQLObjectType({
         apellidos: { type: graphql.GraphQLString },
         tipoparticipante: {
             type: TipoParticipante,
-            sqlJoin: (inscripcionestable, tipos_participantestable, args) => `${inscripcionestable}.idtipoparticipante = ${tipos_participantestable}.id`
+            sqlJoin: (inscripcionesTable, tipos_participantesTable, args) => `${inscripcionesTable}.idtipoparticipante = ${tipos_participantesTable}.id`
         },
         pais: {
             type: Pais,
-            sqlJoin: (inscripcionestable, paisestable, args) => `${inscripcionestable}.idtipoparticipante = ${paisestable}.id`
+            sqlJoin: (inscripcionesTable, paisesTable, args) => `${inscripcionesTable}.idtipoparticipante = ${paisesTable}.id`
         }
     })
 });
@@ -79,7 +82,7 @@ const MutationRoot = new graphql.GraphQLObjectType({
             },
             resolve: async(parent, args, context, resolveInfo) => {
                 try {
-                    return (await client.query("INSERT INTO Inscritos (nombres, apellidos, idtipoparticipante) VALUES ($1, $2, $3) RETURNING *", [args.nombres, args.apellidos, args.idtipoparticipante])).rows[0]
+                    return (await client.query("INSERT INTO Inscripciones (nombres, apellidos, idtipoparticipante) VALUES ($1, $2, $3) RETURNING *", [args.nombres, args.apellidos, args.idtipoparticipante])).rows[0]
                 } catch (err) {
                     throw new Error("Failed to insert new player")
                 }
@@ -99,6 +102,8 @@ const QueryRoot = new graphql.GraphQLObjectType({
             type: new graphql.GraphQLList(Inscrito),
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
+                    sql = sql.replace(/\"/g, '')
+                    console.log(sql);
                     return client.query(sql)
                 })
             }
@@ -109,6 +114,9 @@ const QueryRoot = new graphql.GraphQLObjectType({
             where: (inscripcionesTable, args, context) => `${inscripcionesTable}.id = ${args.id}`,
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
+                    console.log("antes:" + sql);
+                    sql = sql.replace(/\"/g, '')
+                    console.log(sql);
                     return client.query(sql)
                 })
             }
@@ -117,6 +125,7 @@ const QueryRoot = new graphql.GraphQLObjectType({
             type: new graphql.GraphQLList(TipoParticipante),
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
+                    sql = sql.replace(/\"/g, '')
                     return client.query(sql)
                 })
             }
@@ -127,6 +136,27 @@ const QueryRoot = new graphql.GraphQLObjectType({
             where: (tipos_participantesTable, args, context) => `${tipos_participantesTable}.id = ${args.id}`,
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster.default(resolveInfo, {}, sql => {
+                    sql = sql.replace(/\"/g, '')
+                    return client.query(sql)
+                })
+            }
+        },
+        paises: {
+            type: new graphql.GraphQLList(Pais),
+            resolve: (parent, args, context, resolveInfo) => {
+                return joinMonster.default(resolveInfo, {}, sql => {
+                    sql = sql.replace(/\"/g, '')
+                    return client.query(sql)
+                })
+            }
+        },
+        pais: {
+            type: Pais,
+            args: { id: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) } },
+            where: (paisesTable, args, context) => `${paisesTable}.id = ${args.id}`,
+            resolve: (parent, args, context, resolveInfo) => {
+                return joinMonster.default(resolveInfo, {}, sql => {
+                    sql = sql.replace(/\"/g, '')
                     return client.query(sql)
                 })
             }
